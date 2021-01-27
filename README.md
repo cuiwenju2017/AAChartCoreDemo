@@ -3,7 +3,9 @@
 更多用法查看原文：[https://github.com/AAChartModel/AAChartCore](https://github.com/AAChartModel/AAChartCore)
 
 1.assets复制到main文件夹下
+
 2.AAChartCoreLib文件复制到项目中以便引用
+
 3.引用布局
 ```
 <com.example.test.AAChartCoreLib.AAChartCreator.AAChartView
@@ -11,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 ```
+
 4.主要代码(简单用法)
 ```
 public class MainActivity extends AppCompatActivity implements AAChartView.AAChartViewCallBack {
