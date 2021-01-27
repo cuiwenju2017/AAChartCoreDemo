@@ -3,6 +3,7 @@ package com.example.test;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 
 import com.example.test.AAChartCoreLib.AAChartCreator.AAChartModel;
@@ -16,6 +17,8 @@ import com.example.test.AAChartCoreLib.AAChartEnum.AAChartZoomType;
 import com.example.test.AAChartCoreLib.AAOptionsModel.AAStyle;
 import com.google.gson.Gson;
 
+import java.text.DecimalFormat;
+
 public class MainActivity extends AppCompatActivity implements AAChartView.AAChartViewCallBack {
 
     private AAChartModel aaChartModel;
@@ -27,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements AAChartView.AACha
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setUpAAChartView();
+        repeatUpdateChartData();//更新数据刷新图表
     }
 
     private void setUpAAChartView() {
@@ -74,6 +78,71 @@ public class MainActivity extends AppCompatActivity implements AAChartView.AACha
                 });
         this.aaChartModel = aaChartModel;
         return aaChartModel;
+    }
+
+    private AASeriesElement[] configureChartSeriesArray() {
+        int maxRange = 9;//x轴最大数量
+
+        Object[] numberArr1 = new Object[maxRange];
+        Object[] numberArr2 = new Object[maxRange];
+        Object[] numberArr3 = new Object[maxRange];
+        Object[] numberArr4 = new Object[maxRange];
+
+        for (int i = 0; i < maxRange; i++) {
+            double numb1 = (Math.random() * 100);//0到100的随机数
+            double numb2 = (Math.random() * 100);//0到100的随机数
+            double numb3 = (Math.random() * 100);//0到100的随机数
+            double numb4 = (Math.random() * 100);//0到100的随机数
+            DecimalFormat decimalFormat = new DecimalFormat(".0");//构造方法的字符格式这里如果小数不足1位,会以0补足.
+            double p1 = Double.parseDouble(decimalFormat.format(numb1));
+            double p2 = Double.parseDouble(decimalFormat.format(numb2));
+            double p3 = Double.parseDouble(decimalFormat.format(numb3));
+            double p4 = Double.parseDouble(decimalFormat.format(numb4));
+
+            numberArr1[i] = p1;
+            numberArr2[i] = p2;
+            numberArr3[i] = p3;
+            numberArr4[i] = p4;
+        }
+
+        AASeriesElement[] aaSeriesElementsArr = new AASeriesElement[]{
+                new AASeriesElement()
+                        .name("东京")
+                        .fillOpacity(0.3f)//折线填充图、曲线填充图、直方折线填充图等填充图类型的填充颜色透明度
+                        .data(numberArr1),
+                new AASeriesElement()
+                        .name("纽约")
+                        .fillOpacity(0.3f)
+                        .data(numberArr2),
+                new AASeriesElement()
+                        .name("伦敦")
+                        .fillOpacity(0.3f)
+                        .data(numberArr3),
+                new AASeriesElement()
+                        .name("柏林")
+                        .fillOpacity(0.3f)
+                        .data(numberArr4)
+        };
+
+        return aaSeriesElementsArr;
+    }
+
+    private void repeatUpdateChartData() {
+        final Handler mHandler = new Handler();
+        Runnable r = new Runnable() {
+
+            @Override
+            public void run() {
+                AASeriesElement[] aaSeriesElementsArr = configureChartSeriesArray();
+
+                aaChartView.aa_onlyRefreshTheChartDataWithChartOptionsSeriesArray(aaSeriesElementsArr);
+
+                //每隔n秒循环执行run方法
+                mHandler.postDelayed(this, 5000);
+            }
+        };
+
+        mHandler.postDelayed(r, 2000);//延时2000毫秒
     }
 
     @Override
