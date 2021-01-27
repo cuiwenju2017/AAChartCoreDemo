@@ -3,6 +3,7 @@ package com.example.test;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.example.test.AAChartCoreLib.AAChartCreator.AAChartModel;
 import com.example.test.AAChartCoreLib.AAChartCreator.AAChartView;
@@ -19,6 +20,7 @@ public class MainActivity extends AppCompatActivity implements AAChartView.AACha
 
     private AAChartModel aaChartModel;
     private AAChartView aaChartView;
+    private String TAG = getClass().getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,12 +78,12 @@ public class MainActivity extends AppCompatActivity implements AAChartView.AACha
 
     @Override
     public void chartViewDidFinishLoad(AAChartView aaChartView) {
-        System.out.println("🔥🔥🔥🔥🔥图表加载完成回调方法!!!!!!!! ");
+        Log.i(TAG, "chartViewDidFinishLoad: " + "🔥🔥🔥🔥🔥图表加载完成回调方法!!!!!!!! ");
     }
 
     @Override
     public void chartViewMoveOverEventMessage(AAChartView aaChartView, AAMoveOverEventMessageModel messageModel) {
         Gson gson = new Gson();
-        System.out.println("👌👌👌👌👌move over event message " + gson.toJson(messageModel));
+        Log.i(TAG, "chartViewMoveOverEventMessage: " + "👌👌👌👌👌move over event message " + gson.toJson(messageModel));
     }
 }
